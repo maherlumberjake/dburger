@@ -1,0 +1,38 @@
+.imgContainer {
+	aspect-ratio: 1;
+	position: relative;
+	border: 2px solid currentColor;
+	border-radius: 0.5ch;
+	padding: 1rem;
+	display: flex;
+	width: max(270px, 30vw);
+
+	flex-direction: column;
+	gap: 2rem;
+	> img {
+		aspect-ratio: inherit;
+		margin-inline: auto;
+		max-width: 100%;
+		color: rgba(0, 0, 0, 0);
+		border-radius: 99vh;
+		&::before {
+			content: ("couldnt load");
+		}
+	}
+	> label {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		cursor: pointer;
+		color: var(--mainc);
+	}
+	h1 {
+		text-align: center;
+		color: var(--mainc);
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+	h2 {
+		text-align: center;
+	}
+}

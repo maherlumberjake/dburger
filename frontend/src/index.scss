@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	color-scheme: light dark;
+	--mainc: yellow;
+	--altc: #006e5e;
+	--darkc: #1d0606;
+	--lightc: rgb(255, 232, 232);
+	--bgc: var(--darkc);
+	--textc: var(--lightc);
+}
+body {
+	background-color: var(--bgc);
+	color: var(--textc);
+}
+@media (prefer-scheme-color: dark) {
+	body {
+		--bgc: var(--darkc);
+		--textc: var(--lightc);
+	}
+}
+@media (prefer-scheme-color: light) {
+	body {
+		--bgc: var(--lightc);
+		--textc: var(--darkc);
+	}
+}
+.active {
+	position: relative;
+	&::after {
+		content: "";
+		bottom: -10%;
+		left: 0px;
+		position: absolute;
+		width: 100%;
+		background-color: var(--mainc);
+		height: 2px;
+	}
+}

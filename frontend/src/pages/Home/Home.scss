@@ -1,0 +1,37 @@
+#entry {
+	background-image: url(../../assets/herov1.png);
+	background-size: 80% 100%;
+	background-position: right;
+}
+
+@media screen and (max-width: 950px) {
+	#entry {
+		background-position: 80% 100%;
+		background-size: 150% 100%;
+
+		p,
+		h1,
+		button {
+			background: #00000042;
+			color: white;
+			padding: 0.5rem;
+			backdrop-filter: blur(1.5px);
+			border-radius: 0.5ch;
+		}
+	}
+}
+@media screen and (max-width: 500px) {
+	#entry {
+		p,
+		h1,
+		button {
+			background: #00000042;
+			color: white;
+			padding: 0.5rem;
+			backdrop-filter: blur(1.5px);
+			border-radius: 0.5ch;
+		}
+		background-position: 85% 100%;
+		background-size: 300% 100%;
+	}
+}

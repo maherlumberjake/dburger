@@ -1,0 +1,55 @@
+#login {
+	display: grid;
+	width: clamp(10rem, 50vw, 100%);
+	font-size: var(--fs2);
+	grid-template-columns: 1fr 1fr;
+	place-content: center;
+	padding: var(--sp6);
+	margin-inline: auto;
+	align-items: center;
+	gap: var(--sp8);
+	input {
+		border: transparent;
+		padding: 0.5ch;
+		border-radius: 0.25ch;
+		outline: none;
+		border: none;
+		transition: var(--tr);
+	}
+	input[type="submit"] {
+		align-self: center;
+		grid-column: span 2;
+		background-color: var(--mainc);
+		color: var(--darkc);
+		border-radius: 0.75ch;
+		outline: none;
+		font-weight: bold;
+		border: none;
+		padding: var(--sp3);
+		cursor: pointer;
+	}
+}
+#formLogo {
+	margin: 3rem auto;
+	display: block;
+	width: max(10vw, 8rem);
+	aspect-ratio: 1;
+}
+.welcome {
+	text-align: center;
+	margin-bottom: 1rem;
+	font-size: var(--sp10);
+	> span {
+		color: var(--mainc);
+	}
+}
+::placeholder {
+	transition: 500ms ease;
+}
+form#login input:focus,
+form#login input:focus-visible {
+	&::placeholder {
+		transform: translateX(100%);
+	}
+	box-shadow: 0px 0px 5px 0px inset var(--mainc), 0px 0px 5px 0px var(--mainc);
+}
