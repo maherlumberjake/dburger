@@ -4,10 +4,9 @@ import "./menu.scss";
 axioslocal.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
 	"jwt"
 )}`;
-import placeholderimg from "../../assets/burger.png";
 import { axioslocal } from "../auth/Signup/SignUp";
-import { disCount } from "../../util/discount";
 import { BURGER } from "../../models/BURGER";
+import Burger from "../../components/burgerComponent/burger";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const loader = () => {
@@ -16,17 +15,23 @@ export const loader = () => {
 		redirect("/signup?message=you have to log in first")
 	);
 };
-
+interface responce {
+	data: BURGER[];
+	totalBurgers: number;
+}
 export default function UserProfile() {
-	const [menu, setMenu] = useState<BURGER[]>();
+	const [menu, setMenu] = useState<responce>({ data: [], totalBurgers: 0 });
 	const [loading, setLoading] = useState(false);
+	const [currentPage, setCurrentPage] = useState<number>(1);
+	const maxPages = Math.ceil(menu?.totalBurgers / 4);
 
 	useEffect(() => {
 		const fetchData = async () => {
 			setLoading(true);
 			try {
-				const res = await axioslocal.get("/menu");
-				setMenu(res.data.data);
+				const res = await axioslocal.get(`/menu?page=${currentPage}`);
+
+				setMenu(res.data);
 			} catch (error) {
 				console.log(error);
 			} finally {
@@ -34,52 +39,42 @@ export default function UserProfile() {
 			}
 		};
 		fetchData();
-	}, []);
+	}, [currentPage]);
 
 	return (
 		<>
+			{!loading && (
+				<div className="flex justify-center items-center pt-16 space-x-4 w-1/4">
+					{currentPage !== 1 && (
+						<button
+							onClick={() => setCurrentPage((p) => p - 1)}
+							className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+						>
+							Previous Page
+						</button>
+					)}
+					<span className="text-xl font-bold">{currentPage}</span>
+					{maxPages !== currentPage && (
+						<button
+							onClick={() => setCurrentPage((p) => p + 1)}
+							className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+						>
+							Next Page
+						</button>
+					)}
+				</div>
+			)}
 			{loading ? (
-				<h2>loading </h2>
+				<h2 className="text-center text-yellow-500 text-3xl font-bold py-40">
+					loading{" "}
+				</h2>
 			) : (
 				<section id="menu">
-					{menu?.map((burger) => (
-						<div
+					{menu?.data?.map((burger) => (
+						<Burger
+							burger={burger}
 							key={burger._id}
-							className="card"
-						>
-							<img
-								src={placeholderimg}
-								alt="img"
-							/>
-							<h3> {burger.title} </h3>
-							{burger.discount > 0 && (
-								<span> Discount: {burger.discount} % </span>
-							)}
-
-							<div className="spanContainer">
-								<div className="likes">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										fill="none"
-										viewBox="0 0 24 24"
-										strokeWidth={1.5}
-										stroke="currentColor"
-										className="size-6"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
-										/>
-									</svg>
-									<span>{burger.likes} </span>
-								</div>
-								<div className="price">
-									<span> {burger.price}$</span>
-									<span> {disCount(burger.price, burger.discount)}$ </span>
-								</div>
-							</div>
-						</div>
+						/>
 					))}
 				</section>
 			)}

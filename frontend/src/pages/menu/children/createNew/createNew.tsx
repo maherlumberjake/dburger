@@ -25,12 +25,14 @@ export const action = async ({ request }: { request: Request }) => {
 		discount = parseInt(discount);
 		if (!title || !description || !price) {
 			return new Error(
-				"please fill the required filled [title,description,price] and at least choose 1 image"
+				"please fill the required filled [title,description,price]"
 			);
 		} else if (discount > 95 || price > 1000) {
-			return new Error(
-				"what kind of burger is this ? discount cannot be more than 95% and price cannot be more than 1000%"
-			);
+			return new Error("discount and price cant be more 100");
+		} else if (title.length > 30 || title.length < 3) {
+			return new Error("title must be between 3 and 30 characters");
+		} else if (description.length > 250 || description.length < 5) {
+			return new Error("description must be between 5 and 250 characters");
 		} else {
 			try {
 				const us = await axioslocal.post("/menu", {
@@ -52,11 +54,12 @@ export const action = async ({ request }: { request: Request }) => {
 	}
 };
 export default function CreateNewBurger() {
-	const err = useActionData() as string;
+	const err = useActionData() as Error;
 	console.log(err);
 	const status = useNavigation();
 	return (
-		<div className="grid columns-2 justify-center gap-10 py-40">
+		<div className="grid columns-1 justify-center gap-10 py-40">
+			{err && <h3 className="text-red-500">{err.message}</h3>}
 			<Form
 				method="post"
 				replace
