@@ -45,7 +45,7 @@ export default function Root() {
 									className={({ isActive }) => (isActive ? "active" : "")}
 								>
 									{" "}
-									sign up
+									Sign up
 								</NavLink>
 							) : (
 								<button onClick={toggleShow}>profile</button>
@@ -58,7 +58,7 @@ export default function Root() {
 							)}
 						</>
 					) : (
-						<h2>{user.error ? "server error" : "loading..."}</h2>
+						<h2>{user.error ? "Server error" : "Loading..."}</h2>
 					)}
 				</nav>
 			</header>

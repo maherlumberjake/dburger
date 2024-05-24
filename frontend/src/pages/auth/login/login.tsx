@@ -66,7 +66,7 @@ export default function Login() {
 	const status = useNavigation();
 
 	return (
-		<div className=" grid columns-1 justify-center  gap-10  py-40">
+		<div className=" text-sm md:text-lg grid columns-1 justify-center  gap-5 md:gap-10  py-10">
 			<img
 				id="formLogo"
 				src={logo}
@@ -75,7 +75,8 @@ export default function Login() {
 			/>
 			{err && <h4 className="text-red-600 dark:text-red-400 "> {err} </h4>}
 			<h1 className="text-center text-2xl md:text-4xl">
-				Welcome back in the <span>D'burger</span>
+				Welcome back in the
+				<span className="block text-yellow-500 my-2 font-bold">D'burger</span>
 			</h1>
 			<Form
 				className="grid md:grid-cols-2"

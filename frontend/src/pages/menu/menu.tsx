@@ -11,7 +11,10 @@ import { BURGER } from "../../models/BURGER";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const loader = () => {
-	return !localStorage.getItem("jwt") && redirect("/signup");
+	return (
+		!localStorage.getItem("jwt") &&
+		redirect("/signup?message=you have to log in first")
+	);
 };
 
 export default function UserProfile() {

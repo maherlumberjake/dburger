@@ -4,12 +4,14 @@ import {
 	redirect,
 	useActionData,
 	useNavigation,
+	useSearchParams,
 } from "react-router-dom";
 import "./signUp.scss";
 
 import logo from "../../../assets/logov1.png";
 
 import axios, { AxiosError, AxiosInstance } from "axios";
+import { useState } from "react";
 // eslint-disable-next-line react-refresh/only-export-components
 export const axioslocal: AxiosInstance = axios.create({
 	baseURL: "http://localhost:4000/api/v1",
@@ -66,6 +68,15 @@ export async function action({ request }: { request: Request }) {
 // eslint-disable-next-line react-refresh/only-export-components
 
 export default function SignUp() {
+	const [searchParams] = useSearchParams();
+	const [msg, setMessage] = useState<string | null>(
+		searchParams.get("message")
+	);
+	if (msg) {
+		setTimeout(() => {
+			setMessage(null);
+		}, 2000);
+	}
 	let err = useActionData() as string;
 	err =
 		err && err.includes("code 400")
@@ -74,23 +85,35 @@ export default function SignUp() {
 	const status = useNavigation();
 
 	return (
-		<div className=" grid columns-1 justify-center  gap-10  py-40">
+		<div className=" text-sm md:text-lg grid columns-1 justify-center  gap-5 md:gap-10  py-10">
 			<img
 				id="formLogo"
 				src={logo}
 				alt="logo image"
 				className="w-20 md:w-40 block mx-auto"
 			/>
-			{err && <h4 className="text-red-600 dark:text-red-400 "> {err} </h4>}
+			{err && (
+				<h4 className="text-red-600 dark:text-white border-b-2 border-red-700 py-2 text-xl text-center">
+					{" "}
+					{err}{" "}
+				</h4>
+			)}
+			{msg && (
+				<h4 className="text-red-600 dark:text-white border-b-2 border-red-700 py-2 text-xl text-center ">
+					{" "}
+					{msg}{" "}
+				</h4>
+			)}
 			<h1 className="text-center text-2xl md:text-4xl">
-				Welcome in the <span>D'burger</span>
+				Welcome in the
+				<span className="block text-yellow-500 my-2 font-bold">D'burger</span>
 			</h1>
 			<Form
 				method="post"
 				id="signUP"
 				replace
 			>
-				<label htmlFor="name">name :</label>
+				<label htmlFor="name">Name </label>
 				<input
 					type="text"
 					required

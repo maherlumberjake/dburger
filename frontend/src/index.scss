@@ -39,3 +39,9 @@ body {
 		height: 2px;
 	}
 }
+.run {
+	animation-play-state: running;
+}
+.stop {
+	animation-play-state: paused;
+}
