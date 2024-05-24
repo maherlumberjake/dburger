@@ -90,7 +90,7 @@ export default function UserProfile() {
 											viewBox="0 0 24 24"
 											strokeWidth={1.5}
 											stroke="currentColor"
-											className="w-10 h-10"
+											className="w-10 h-10 hover:text-white"
 										>
 											<path
 												strokeLinecap="round"

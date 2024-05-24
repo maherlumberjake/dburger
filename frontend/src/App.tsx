@@ -1,5 +1,5 @@
 import { Link, RouterProvider, createBrowserRouter } from "react-router-dom";
-import Root from "./pages/Root";
+import Root from "./pages/Root/Root";
 import Home from "./pages/Home/Home";
 import SignUp, {
 	Loader as isAuth,

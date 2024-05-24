@@ -17,8 +17,8 @@ export default function Profile(props?: { name?: string; img?: string }) {
 				{" "}
 				{props?.name || "unKnown"}
 			</h3>
-			<div className="flex  justify-between z-50">
-				<button>
+			<div className="flex  justify-between z-50 ">
+				<button className="hover:text-white">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -34,7 +34,10 @@ export default function Profile(props?: { name?: string; img?: string }) {
 						/>
 					</svg>
 				</button>
-				<Link to="/UserProfile">
+				<Link
+					to="/UserProfile"
+					className="hover:text-white"
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -51,6 +54,7 @@ export default function Profile(props?: { name?: string; img?: string }) {
 					</svg>
 				</Link>
 				<button
+					className="hover:text-white"
 					onClick={() => {
 						localStorage.removeItem("jwt");
 						location.reload();

@@ -1,21 +1,28 @@
 #login {
 	display: grid;
 	width: clamp(10rem, 70vw, 100%);
-	font-size: var(--fs2);
 	grid-template-columns: 1fr 1fr;
 	place-content: center;
-	padding: var(--sp6);
 	margin-inline: auto;
 	align-items: center;
 	row-gap: 1rem;
+	.inputsContainer {
+		align-items: center;
+		display: flex;
+		border-radius: 0.5ch;
+		svg {
+			transition: color 300ms ease;
+		}
+		&:focus-within svg {
+			color: var(--mainc);
+		}
+	}
 	input {
 		border: transparent;
-		padding: 0.5ch;
 		border-radius: 0.25ch;
 		outline: none;
 		border: none;
 		transition: var(--tr);
-		border-radius: 0.2ch;
 	}
 	input[type="submit"] {
 		align-self: center;
@@ -45,11 +52,11 @@
 	}
 }
 ::placeholder {
+	color: rgba(255, 72, 0, 0.637) !important;
 	transition: 500ms ease;
 }
-
-form#login input:focus,
-form#login input:focus-visible {
+#login input:focus,
+#login input:focus-visible {
 	&::placeholder {
 		transform: translateY(-150%);
 	}

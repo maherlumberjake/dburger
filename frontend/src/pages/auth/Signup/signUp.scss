@@ -6,6 +6,17 @@
 	margin-inline: auto;
 	align-items: center;
 	row-gap: 1rem;
+	.inputsContainer {
+		align-items: center;
+		display: flex;
+		border-radius: 0.5ch;
+		svg {
+			transition: color 300ms ease;
+		}
+		&:focus-within svg {
+			color: var(--mainc);
+		}
+	}
 	input {
 		border: transparent;
 		border-radius: 0.25ch;
@@ -41,6 +52,7 @@
 	}
 }
 ::placeholder {
+	color: rgba(255, 72, 0, 0.637) !important;
 	transition: 500ms ease;
 }
 #signUP input:focus,

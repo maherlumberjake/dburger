@@ -31,7 +31,9 @@ export default function Home() {
 								? location.reload()
 								: navigate(user?.auth ? "/menu" : "/signUp");
 						}}
-						className=" border-current text-white border-4 py-1 px-3 rounded-full font-bold mt-3 capitalize lg:text-yellow-500"
+						className=" border-current text-white border-4 py-1 px-3 rounded-full font-bold mt-3 capitalize lg:text-yellow-500
+						md:hover:text-white hover:text-yellow-500
+						"
 					>
 						{user?.error
 							? "refresh"
