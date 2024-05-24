@@ -32,15 +32,17 @@ function App() {
 				</UserConextProvider>
 			),
 			errorElement: (
-				<h2>
-					some error has occured refresh the page or go to :
-					<Link
-						to="/"
-						className=" border-current text-white border-4 py-1 px-3 rounded-full font-bold mt-3 capitalize lg:text-yellow-500"
-					>
-						home page
-					</Link>
-				</h2>
+				<div className=" mx-auto grid  mt-40 justify-center items-center">
+					<h2>
+						some error has occured refresh the page or go to :
+						<Link
+							to="/"
+							className=" border-current text-white border-4 py-1 px-3 rounded-full font-bold mt-3 capitalize lg:text-yellow-500"
+						>
+							home page
+						</Link>
+					</h2>
+				</div>
 			),
 			children: [
 				{

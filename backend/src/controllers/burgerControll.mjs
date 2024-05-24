@@ -6,7 +6,7 @@ export const getAllBurgers = async (req, res) => {
         let burgersCursor = Burger.find()
         //paginartion stuff
         const page = +req.query.page || 1;
-        const limit = +req.query.limit || 4;
+        const limit = 5;
         const skip = (page - 1) * limit
         const totalBurgers = await Burger.countDocuments()
         if (skip > totalBurgers) {

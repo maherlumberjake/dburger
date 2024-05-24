@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, redirect } from "react-router-dom";
+import { MouseEvent, useEffect, useState } from "react";
+import { Link, redirect, useSearchParams } from "react-router-dom";
 import "./menu.scss";
 axioslocal.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
 	"jwt"
@@ -22,15 +22,30 @@ interface responce {
 export default function UserProfile() {
 	const [menu, setMenu] = useState<responce>({ data: [], totalBurgers: 0 });
 	const [loading, setLoading] = useState(false);
-	const [currentPage, setCurrentPage] = useState<number>(1);
-	const maxPages = Math.ceil(menu?.totalBurgers / 4);
+	const [searchParams, setSearchParams] = useSearchParams();
 
+	const [currentPage, setCurrentPage] = useState<number>(
+		parseInt(searchParams.get("page") || "1")
+	);
+	const maxPages = Math.ceil(menu?.totalBurgers / 5);
+
+	function previosPage(
+		e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+	) {
+		e.stopPropagation();
+		setCurrentPage((p) => p - 1);
+		return setSearchParams(`?page=${currentPage - 1}`);
+	}
+	function nextPage(e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) {
+		e.stopPropagation();
+		setCurrentPage((p) => p + 1);
+		return setSearchParams(`?page=${currentPage + 1}`);
+	}
 	useEffect(() => {
 		const fetchData = async () => {
 			setLoading(true);
 			try {
 				const res = await axioslocal.get(`/menu?page=${currentPage}`);
-
 				setMenu(res.data);
 			} catch (error) {
 				console.log(error);
@@ -39,15 +54,14 @@ export default function UserProfile() {
 			}
 		};
 		fetchData();
-	}, [currentPage]);
-
+	}, [currentPage, searchParams]);
 	return (
 		<>
 			{!loading && (
 				<div className="flex justify-center items-center pt-16 space-x-4 w-1/4">
 					{currentPage !== 1 && (
 						<button
-							onClick={() => setCurrentPage((p) => p - 1)}
+							onClick={(e) => previosPage(e)}
 							className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
 						>
 							Previous Page
@@ -56,7 +70,7 @@ export default function UserProfile() {
 					<span className="text-xl font-bold">{currentPage}</span>
 					{maxPages !== currentPage && (
 						<button
-							onClick={() => setCurrentPage((p) => p + 1)}
+							onClick={(e) => nextPage(e)}
 							className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
 						>
 							Next Page

@@ -36,7 +36,7 @@ export default function Root() {
 						About
 					</NavLink>
 					<NavLink
-						to="menu"
+						to="menu?page=1"
 						className={({ isActive }) => (isActive ? "active" : "")}
 					>
 						{" "}
