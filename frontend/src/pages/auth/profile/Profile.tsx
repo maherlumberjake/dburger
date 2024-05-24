@@ -51,7 +51,10 @@ export default function Profile(props?: { name?: string; img?: string }) {
 					</svg>
 				</Link>
 				<button
-					onClick={() => localStorage.removeItem("jwt")}
+					onClick={() => {
+						localStorage.removeItem("jwt");
+						location.reload();
+					}}
 					title="logout"
 				>
 					<svg

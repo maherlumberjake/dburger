@@ -125,7 +125,9 @@ export default function UserProfile() {
 					<div>hello world</div>
 				</>
 			) : (
-				<h2 className="text-4xl">loading...</h2>
+				<h2 className="text-4xl text-center py-10 text-yellow-400 font-bold">
+					loading...
+				</h2>
 			)}
 		</>
 	);

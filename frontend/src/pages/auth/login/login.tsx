@@ -43,6 +43,7 @@ export async function action({ request }: { request: Request }) {
 				axioslocal.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
 					"jwt"
 				)}`;
+				location.reload();
 				return redirect("/UserProfile");
 			} catch (err) {
 				return err ? "Invalid credentials" : "Something went wrong";

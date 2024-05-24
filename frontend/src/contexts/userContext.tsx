@@ -7,6 +7,7 @@ import {
 	useState,
 } from "react";
 import { axioslocal } from "../pages/auth/Signup/SignUp";
+import { AxiosError } from "axios";
 
 type User = {
 	user: {
@@ -17,6 +18,7 @@ type User = {
 			thumbnailImg: string;
 		};
 	};
+	error: AxiosError | null;
 	auth: boolean;
 	loading: boolean;
 	setAuth: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,6 +30,7 @@ export const UserConextProvider = ({ children }: { children: ReactNode }) => {
 		"jwt"
 	)}`;
 	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<AxiosError | null>(null);
 	const [user, setUser] = useState<{
 		status: string;
 		user: { name: string; email: string; thumbnailImg: string };
@@ -41,20 +44,27 @@ export const UserConextProvider = ({ children }: { children: ReactNode }) => {
 				setUser(res.data);
 				setLoading(false);
 			})
-			.catch(() => {
-				setAuth(false);
-				setLoading(false);
+			.catch((err: AxiosError) => {
+				if (err.message == "Request failed with status code 401") {
+					setAuth(false);
+					setLoading(false);
+				} else setLoading(false);
 			})
 			.finally(() => setLoading(false));
 	}, [auth]);
 	useMemo(() => {
-		localStorage.getItem("jwt") ? setAuth(true) : setAuth(false);
+		if (!localStorage.getItem("jwt")) {
+			setAuth(false);
+			setError(null);
+		}
+		setAuth(true);
 	}, []);
 	const sent: User = {
 		auth,
 		loading,
 		setAuth,
 		user,
+		error,
 	};
 	return <userContext.Provider value={sent}>{children}</userContext.Provider>;
 };

@@ -37,7 +37,7 @@ export default function Root() {
 						{" "}
 						Menu
 					</NavLink>
-					{!user?.loading ? (
+					{!user?.loading && !user?.error ? (
 						<>
 							{!user?.auth ? (
 								<NavLink
@@ -58,7 +58,7 @@ export default function Root() {
 							)}
 						</>
 					) : (
-						<h2>loading..</h2>
+						<h2>{user.error ? "server error" : "loading..."}</h2>
 					)}
 				</nav>
 			</header>
