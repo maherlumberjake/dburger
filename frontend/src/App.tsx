@@ -22,6 +22,7 @@ import CreateNewBurger, {
 	loader as CreateNewBurgerLoader,
 	action as CreateNewBurgerAction,
 } from "./pages/menu/children/createNew/createNew";
+import BurgerDetails from "./pages/menu/children/burgerDetails/burgerDetails";
 function App() {
 	const router = createBrowserRouter([
 		{
@@ -62,6 +63,12 @@ function App() {
 					loader: menuLoader,
 					element: <Menu />,
 				},
+				{
+					path: "/menu/:id",
+					loader: menuLoader,
+					element: <BurgerDetails />,
+				},
+
 				{
 					path: "/signup",
 					action: signupAction,

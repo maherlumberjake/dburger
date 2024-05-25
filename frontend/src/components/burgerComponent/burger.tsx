@@ -1,10 +1,13 @@
+import { useNavigate } from "react-router-dom";
 import { BURGER } from "../../models/BURGER";
 import { disCount } from "../../util/discount";
 import "./burger.scss";
 export default function Burger({ burger }: { burger: BURGER }) {
+	const navigate = useNavigate();
 	return (
 		<>
 			<div
+				onClick={() => navigate(burger._id)}
 				key={burger._id}
 				className="card"
 			>

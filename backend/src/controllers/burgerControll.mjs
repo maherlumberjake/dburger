@@ -59,3 +59,17 @@ export const createNew = async (req, res) => {
         res.status(400).json(error)
     }
 }
+export const getBurgerById = async (req, res) => {
+
+    try {
+        let burger = await Burger.findById({ _id: req.params.id })
+        res.status(200).json({
+            status: 'success',
+            burger,
+        })
+
+    } catch (error) {
+        console.log(error)
+        res.status(404)
+    }
+}
