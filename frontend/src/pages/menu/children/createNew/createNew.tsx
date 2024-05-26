@@ -85,7 +85,7 @@ export default function CreateNewBurger() {
 				method="post"
 				replace
 				encType="multipart/form-data"
-				className="grid grid-cols-1 justify-center gap-10 py-40 sm:grid-cols-3 px-20"
+				className="grid grid-cols-1 justify-center gap-10 py-40 sm:grid-cols-2 px-20"
 			>
 				<div className="flex flex-col items-center border-4 border-orange-900 p-4 rounded-lg border-dashed  justify-center">
 					{encodedImg && (

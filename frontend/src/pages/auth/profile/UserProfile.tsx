@@ -7,7 +7,6 @@ import { redirect } from "react-router-dom";
 axioslocal.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
 	"jwt"
 )}`;
-import avatar from "../../../assets/avatar.png";
 import { USER } from "../../../models/USER";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -19,7 +18,7 @@ export default function UserProfile() {
 	const [img, setImg] = useState<File>();
 	const [encodedImage, setEncodedImg] = useState<string>("");
 	const [loading, setLoading] = useState(false);
-	const [showImg, setShowImg] = useState<string>("");
+
 	if (img) {
 		convertToBase64(img)
 			.then((res) => {
@@ -33,7 +32,7 @@ export default function UserProfile() {
 			const res = await axioslocal.patch(`/profile`, {
 				thumbnailImg: encodedImage,
 			});
-			setShowImg(res.data.user.thumbnailImg);
+			setEncodedImg(res.data.user.thumbnailImg);
 			setLoading(false);
 			setImg(undefined);
 		} catch (error) {
@@ -58,6 +57,7 @@ export default function UserProfile() {
 
 		fetchData();
 	}, []);
+	console.log(user);
 	return (
 		<>
 			{user && !loading ? (
@@ -69,13 +69,7 @@ export default function UserProfile() {
 									<h1 className="md:text-4xl">loading</h1>
 								)}
 								<img
-									src={
-										showImg && showImg != "noImg"
-											? showImg
-											: user?.thumbnailImg != "noImg"
-											? user?.thumbnailImg
-											: avatar
-									}
+									src={encodedImage ? encodedImage : user.thumbnailImg}
 									alt="loading"
 									className=" rounded-full!aspect-square"
 								/>

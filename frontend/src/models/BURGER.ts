@@ -1,6 +1,8 @@
+import { USER } from "./USER";
+
 export interface BURGER {
 	_id: string;
-	owner: string;
+	owner: USER;
 	description: string;
 	discount: number;
 	kind: boolean;

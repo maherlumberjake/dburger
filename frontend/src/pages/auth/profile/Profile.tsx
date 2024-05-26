@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import avatar from "../../../assets/avatar.png";
+
 export default function Profile(props?: { name?: string; img?: string }) {
 	return (
 		<div
@@ -8,7 +8,7 @@ export default function Profile(props?: { name?: string; img?: string }) {
 		>
 			<div className=" w-full aspect-square  border-2 rounded-full absolute -bottom-1/4 left-0 border-current"></div>
 			<img
-				src={props?.img && props.img != "noImg" ? props.img : avatar}
+				src={props?.img}
 				alt="profile image"
 				className=" rounded-full size-28  border-2 border-current"
 			/>

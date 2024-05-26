@@ -1,8 +1,7 @@
 import { Burger } from '../models/BurgerSchema.mjs'
 import jwt from 'jsonwebtoken'
 import { User } from '../models/UserSchema.mjs'
-import fs from 'fs'
-import path, { dirname } from 'path'
+
 
 export const getAllBurgers = async (req, res) => {
     try {
@@ -17,25 +16,29 @@ export const getAllBurgers = async (req, res) => {
         }
         burgersCursor = burgersCursor.skip(skip).limit(limit)
         // paginartion stuff
-        const data = await burgersCursor
-
-        data.forEach((el) => {
-            el.displayImg = `http://localhost:4000/${el.displayImg}`
-        })
-        console.log(data)
-        res.status(200).json({
+        let data = await burgersCursor.populate('owner').exec();
+        data = data.map(burger => {
+            if (burger.displayImg == 'noImg') {
+                burger.displayImg = `http://localhost:4000/burger2.png`;
+            } else {
+                burger.displayImg = `http://localhost:4000/${burger.displayImg}`;
+            }
+            return burger;
+        });
+        if (!data) {
+            return res.status(200).json('no burgers yet')
+        }
+        return res.status(200).json({
             totalBurgers,
             status: 'success',
             data,
         })
-
     } catch (error) {
         console.log(error)
         res.status(404)
     }
 }
 export const createNew = async (req, res) => {
-    console.log(req.file)
     try {
         let token = req.headers.authorization
         if (!token || token.includes("null")) {
@@ -50,12 +53,12 @@ export const createNew = async (req, res) => {
             }
 
             let user = await User.findById(decoded.payload)
-
-            const newBurger = await Burger.create({ ...req.body, owner: user, displayImg: req.file.filename })
+            const file = req.file?.filename ? req.file.filename : 'noImg'
+            const newBurger = await Burger.create({ ...req.body, owner: user, displayImg: file })
 
             if (newBurger) {
                 user = await User.findByIdAndUpdate(user._id, { ownedBurgers: [...user.ownedBurgers, newBurger] })
-                res.status(201).json({
+                return res.status(201).json({
                     status: 'success',
                     newBurger,
                     msg: 'created successfully'

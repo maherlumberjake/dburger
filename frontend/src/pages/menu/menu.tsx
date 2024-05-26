@@ -41,6 +41,7 @@ export default function UserProfile() {
 		setCurrentPage((p) => p + 1);
 		return setSearchParams(`?page=${currentPage + 1}`);
 	}
+	console.log(menu);
 	useEffect(() => {
 		const fetchData = async () => {
 			setLoading(true);
@@ -55,7 +56,7 @@ export default function UserProfile() {
 		};
 		fetchData();
 	}, [currentPage, searchParams]);
-	console.log(menu);
+
 	return (
 		<>
 			{!loading && (
@@ -69,7 +70,7 @@ export default function UserProfile() {
 						</button>
 					)}
 					<span className="text-xl font-bold">{currentPage}</span>
-					{maxPages !== currentPage && (
+					{maxPages !== currentPage && maxPages != 0 && (
 						<button
 							onClick={(e) => nextPage(e)}
 							className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"

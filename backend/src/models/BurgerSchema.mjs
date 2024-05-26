@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { User } from './UserSchema.mjs'
 export const BurgerSchema = mongoose.Schema({
     title: {
         type: String,
@@ -36,6 +37,19 @@ export const BurgerSchema = mongoose.Schema({
         ref: 'User',
         select: ['-password', '-email', 'confirmPassword']
     },
-    displayImg: String,
+    displayImg: {
+        type: String,
+        default: "noImg"
+    }
+})
+BurgerSchema.pre('find', async function () {
+    this.populate('owner');
+});
+BurgerSchema.post('find', function (docs) {
+    docs.forEach(doc => {
+        if (doc.displayImg == 'noImg') {
+            doc.displayImg = `http://localhost:4000/burger2.png`;
+        }
+    })
 })
 export const Burger = mongoose.model('Burgers', BurgerSchema)

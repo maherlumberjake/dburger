@@ -37,4 +37,12 @@ UserSchema.pre('save', async function (next) {
         next();
     })
 });
+UserSchema.post('find', function (docs) {
+    docs.forEach(doc => {
+        if (doc.thumbnailImg === 'noImg') {
+            doc.thumbnailImg = `http://localhost:4000/avatar.png`;
+        }
+    });
+});
+
 export const User = mongoose.model('User', UserSchema)
