@@ -85,9 +85,9 @@ export default function UserProfile() {
 					no data to show
 				</h2>
 			)}
-			{loading && menu.totalBurgers > 0 ? (
+			{loading ? (
 				<h2 className="text-center text-yellow-500 text-3xl font-bold py-40">
-					loading{" "}
+					loading...
 				</h2>
 			) : (
 				<section id="menu">

@@ -4,7 +4,6 @@ import { disCount } from "../../util/discount";
 import "./burger.scss";
 export default function Burger({ burger }: { burger: BURGER }) {
 	const navigate = useNavigate();
-	console.log(burger);
 	return (
 		<>
 			<div
@@ -21,7 +20,10 @@ export default function Burger({ burger }: { burger: BURGER }) {
 				{burger.discount > 0 && <span> Discount: {burger.discount} % </span>}
 
 				<div className="spanContainer">
-					<div className="likes">
+					<div
+						className="likes"
+						title="like it"
+					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -42,13 +44,6 @@ export default function Burger({ burger }: { burger: BURGER }) {
 						<span> {burger.price}$</span>
 						<span> {disCount(burger.price, burger.discount)}</span>
 					</div>
-				</div>
-				<div className="owner">
-					<img
-						src={burger.owner.thumbnailImg}
-						alt="owner img"
-					/>
-					<h3>{burger.owner.name}</h3>
 				</div>
 			</div>
 		</>

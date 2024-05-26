@@ -96,6 +96,7 @@ export const getProfile = async (req, res) => {
                     user.thumbnailImg = `http://localhost:4000/avatar.png`;
                     return user
                 }
+                else return user
             })
             if (!user) {
                 return res.status(404).json({ status: 'fail', message: 'no user found ' })

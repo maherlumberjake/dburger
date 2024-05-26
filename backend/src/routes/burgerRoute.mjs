@@ -1,5 +1,5 @@
 import express from 'express'
-import { getAllBurgers, createNew, getBurgerById } from '../controllers/burgerControll.mjs'
+import { getAllBurgers, createNew, getBurgerById, addComment } from '../controllers/burgerControll.mjs'
 const router = express.Router()
 import multer from 'multer'
 
@@ -21,4 +21,5 @@ router.route('/')
     .post(cpUpload, createNew)
 router.route('/:id')
     .get(getBurgerById)
+    .patch(addComment)
 export default router

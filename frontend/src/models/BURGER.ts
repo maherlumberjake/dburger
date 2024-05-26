@@ -10,4 +10,16 @@ export interface BURGER {
 	price: number;
 	title: string;
 	displayImg: string;
+	comments: [
+		{
+			_id: string;
+			comment: string;
+			timestamp: string;
+			byUser: {
+				name: string;
+				_id: string;
+				thumbnailImg: string;
+			};
+		}
+	];
 }
