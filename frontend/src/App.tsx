@@ -1,5 +1,5 @@
 import { Link, RouterProvider, createBrowserRouter } from "react-router-dom";
-import Root from "./pages/Root";
+import Root from "./pages/Root/Root";
 import Home from "./pages/Home/Home";
 import SignUp, {
 	Loader as isAuth,
@@ -22,6 +22,7 @@ import CreateNewBurger, {
 	loader as CreateNewBurgerLoader,
 	action as CreateNewBurgerAction,
 } from "./pages/menu/children/createNew/createNew";
+import BurgerDetails from "./pages/menu/children/burgerDetails/burgerDetails";
 function App() {
 	const router = createBrowserRouter([
 		{
@@ -32,15 +33,17 @@ function App() {
 				</UserConextProvider>
 			),
 			errorElement: (
-				<h2>
-					some error has occured refresh the page or go to :
-					<Link
-						to="/"
-						className=" border-current text-white border-4 py-1 px-3 rounded-full font-bold mt-3 capitalize lg:text-yellow-500"
-					>
-						home page
-					</Link>
-				</h2>
+				<div className=" mx-auto grid  mt-40 justify-center items-center">
+					<h2>
+						some error has occured refresh the page or go to :
+						<Link
+							to="/"
+							className=" border-current text-white border-4 py-1 px-3 rounded-full font-bold mt-3 capitalize lg:text-yellow-500"
+						>
+							home page
+						</Link>
+					</h2>
+				</div>
 			),
 			children: [
 				{
@@ -60,6 +63,12 @@ function App() {
 					loader: menuLoader,
 					element: <Menu />,
 				},
+				{
+					path: "/menu/:id",
+					loader: menuLoader,
+					element: <BurgerDetails />,
+				},
+
 				{
 					path: "/signup",
 					action: signupAction,

@@ -1,10 +1,11 @@
 import mongoose from 'mongoose'
-import { UserSchema } from './UserSchema.mjs'
+import { User } from './UserSchema.mjs'
 export const BurgerSchema = mongoose.Schema({
     title: {
         type: String,
         required: [true, 'title is required'],
         maxLength: [30, 'title cannot have more than 30 ch'],
+        minLength: [3, 'title cannot be less than 3 ch'],
     },
     description: {
         type: String,
@@ -36,6 +37,19 @@ export const BurgerSchema = mongoose.Schema({
         ref: 'User',
         select: ['-password', '-email', 'confirmPassword']
     },
+    displayImg: {
+        type: String,
+        default: "noImg"
+    }
 })
-
+BurgerSchema.pre('find', async function () {
+    this.populate('owner');
+});
+BurgerSchema.post('find', function (docs) {
+    docs.forEach(doc => {
+        if (doc.displayImg == 'noImg') {
+            doc.displayImg = `http://localhost:4000/burger2.png`;
+        }
+    })
+})
 export const Burger = mongoose.model('Burgers', BurgerSchema)

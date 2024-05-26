@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import avatar from "../../../assets/avatar.png";
+
 export default function Profile(props?: { name?: string; img?: string }) {
 	return (
 		<div
@@ -8,7 +8,7 @@ export default function Profile(props?: { name?: string; img?: string }) {
 		>
 			<div className=" w-full aspect-square  border-2 rounded-full absolute -bottom-1/4 left-0 border-current"></div>
 			<img
-				src={props?.img && props.img != "noImg" ? props.img : avatar}
+				src={props?.img}
 				alt="profile image"
 				className=" rounded-full size-28  border-2 border-current"
 			/>
@@ -17,8 +17,8 @@ export default function Profile(props?: { name?: string; img?: string }) {
 				{" "}
 				{props?.name || "unKnown"}
 			</h3>
-			<div className="flex  justify-between z-50">
-				<button>
+			<div className="flex  justify-between z-50 ">
+				<button className="hover:text-white">
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -34,7 +34,10 @@ export default function Profile(props?: { name?: string; img?: string }) {
 						/>
 					</svg>
 				</button>
-				<Link to="/UserProfile">
+				<Link
+					to="/UserProfile"
+					className="hover:text-white"
+				>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						fill="none"
@@ -51,7 +54,11 @@ export default function Profile(props?: { name?: string; img?: string }) {
 					</svg>
 				</Link>
 				<button
-					onClick={() => localStorage.removeItem("jwt")}
+					className="hover:text-white"
+					onClick={() => {
+						localStorage.removeItem("jwt");
+						location.reload();
+					}}
 					title="logout"
 				>
 					<svg

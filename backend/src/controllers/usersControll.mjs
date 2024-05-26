@@ -91,7 +91,12 @@ export const getProfile = async (req, res) => {
                 return res.status(400).json({ msg: 'invaild token' })
             }
 
-            const user = await User.findById(decoded.payload)
+            const user = await User.findById(decoded.payload).exec().then(user => {
+                if (user.thumbnailImg == 'noImg') {
+                    user.thumbnailImg = `http://localhost:4000/avatar.png`;
+                    return user
+                }
+            })
             if (!user) {
                 return res.status(404).json({ status: 'fail', message: 'no user found ' })
             }

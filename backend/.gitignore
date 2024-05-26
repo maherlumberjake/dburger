@@ -1,3 +1,6 @@
 .env
 node_modules
 .vscode
+public/*
+!public/avatar.png
+!public/burger2.png

@@ -1,8 +1,9 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
-import logo from "../assets/lowLogov1.png";
-import Profile from "./auth/profile/Profile";
+import logo from "../../assets/lowLogov1.png";
+import Profile from "../auth/profile/Profile";
 import { useState } from "react";
-import { useUser } from "../contexts/userContext";
+import { useUser } from "../../contexts/userContext";
+import "./Root.scss";
 
 export default function Root() {
 	const [show, setShow] = useState<boolean>(false);
@@ -22,7 +23,11 @@ export default function Root() {
 						height="50"
 					/>
 				</Link>
-				<nav className=" inline-flex text-yellow-400 gap-3 text-center font-bold md:text-lg md:gap-7">
+				<nav
+					className=" inline-flex text-yellow-400 gap-3 text-center font-bold md:text-lg md:gap-7
+				
+				"
+				>
 					<NavLink
 						to="about"
 						className={({ isActive }) => (isActive ? "active" : "")}
@@ -31,13 +36,13 @@ export default function Root() {
 						About
 					</NavLink>
 					<NavLink
-						to="menu"
+						to="menu?page=1"
 						className={({ isActive }) => (isActive ? "active" : "")}
 					>
 						{" "}
 						Menu
 					</NavLink>
-					{!user?.loading ? (
+					{!user?.loading && !user?.error ? (
 						<>
 							{!user?.auth ? (
 								<NavLink
@@ -45,7 +50,7 @@ export default function Root() {
 									className={({ isActive }) => (isActive ? "active" : "")}
 								>
 									{" "}
-									sign up
+									Sign up
 								</NavLink>
 							) : (
 								<button onClick={toggleShow}>profile</button>
@@ -58,7 +63,7 @@ export default function Root() {
 							)}
 						</>
 					) : (
-						<h2>loading..</h2>
+						<h2>{user.error ? "Server error" : "Loading..."}</h2>
 					)}
 				</nav>
 			</header>
