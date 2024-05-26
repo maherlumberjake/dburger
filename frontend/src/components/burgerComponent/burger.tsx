@@ -11,7 +11,12 @@ export default function Burger({ burger }: { burger: BURGER }) {
 				key={burger._id}
 				className="card"
 			>
+				<img
+					src={burger.displayImg}
+					alt="animg"
+				/>
 				<h3> {burger.title} </h3>
+
 				{burger.discount > 0 && <span> Discount: {burger.discount} % </span>}
 
 				<div className="spanContainer">
@@ -34,7 +39,7 @@ export default function Burger({ burger }: { burger: BURGER }) {
 					</div>
 					<div className="price">
 						<span> {burger.price}$</span>
-						<span> {disCount(burger.price, burger.discount)}$ </span>
+						<span> {disCount(burger.price, burger.discount)}</span>
 					</div>
 				</div>
 			</div>

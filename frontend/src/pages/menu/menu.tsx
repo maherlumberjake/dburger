@@ -55,10 +55,11 @@ export default function UserProfile() {
 		};
 		fetchData();
 	}, [currentPage, searchParams]);
+	console.log(menu);
 	return (
 		<>
 			{!loading && (
-				<div className="flex justify-center items-center pt-16 space-x-4 w-1/4">
+				<div className="flex justify-center items-center pt-14 space-x-4 w-full">
 					{currentPage !== 1 && (
 						<button
 							onClick={(e) => previosPage(e)}
@@ -78,7 +79,12 @@ export default function UserProfile() {
 					)}
 				</div>
 			)}
-			{loading ? (
+			{menu.totalBurgers == 0 && !loading && (
+				<h2 className="text-center text-4xl text-yellow-500 py-40">
+					no data to show
+				</h2>
+			)}
+			{loading && menu.totalBurgers > 0 ? (
 				<h2 className="text-center text-yellow-500 text-3xl font-bold py-40">
 					loading{" "}
 				</h2>

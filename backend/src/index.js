@@ -14,9 +14,11 @@ app.use(cors({ credentials: true, origin: true }));
 
 app.use(express.json());
 app.use(cookieParser(process.env.SERCRET_STR))
-
+app.use(express.static('./public'))
 app.use("/api/v1/", userrouter);
+
 app.use("/api/v1/menu", burgerrouter);
+
 const PORT = process.env.PORT || 4200;
 mongoose
 	.connect(process.env.CON_STR)

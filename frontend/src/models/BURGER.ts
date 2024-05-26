@@ -7,4 +7,5 @@ export interface BURGER {
 	likes: number;
 	price: number;
 	title: string;
+	displayImg: string;
 }

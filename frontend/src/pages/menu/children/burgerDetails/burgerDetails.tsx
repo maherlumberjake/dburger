@@ -4,7 +4,7 @@ import "./burgerDetails.scss";
 import { useEffect, useState } from "react";
 import { BURGER } from "../../../../models/BURGER";
 // import { Link } from 'react-router-dom'
-import placeHolderImg from "../../../../assets/burger1.png";
+
 import { disCount } from "../../../../util/discount";
 
 export default function BurgerDetails() {
@@ -29,7 +29,7 @@ export default function BurgerDetails() {
 		<div className="burgerDetails grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 pt-20">
 			<div>
 				<img
-					src={placeHolderImg}
+					src={burger?.displayImg}
 					alt="burgerimg"
 					width={500}
 				/>

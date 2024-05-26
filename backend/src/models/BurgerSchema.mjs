@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
-import { UserSchema } from './UserSchema.mjs'
 export const BurgerSchema = mongoose.Schema({
     title: {
         type: String,
         required: [true, 'title is required'],
         maxLength: [30, 'title cannot have more than 30 ch'],
+        minLength: [3, 'title cannot be less than 3 ch'],
     },
     description: {
         type: String,
@@ -36,6 +36,6 @@ export const BurgerSchema = mongoose.Schema({
         ref: 'User',
         select: ['-password', '-email', 'confirmPassword']
     },
+    displayImg: String,
 })
-
 export const Burger = mongoose.model('Burgers', BurgerSchema)
