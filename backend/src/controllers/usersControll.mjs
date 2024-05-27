@@ -91,11 +91,11 @@ export const getProfile = async (req, res) => {
                 return res.status(400).json({ msg: 'invaild token' })
             }
 
-            const user = await User.findById(decoded.payload).select('+ownedBurgers').exec().then(user => {
+            const user = await User.findById(decoded.payload).populate('ownedBurgers').exec().then(user => {
                 if (user.thumbnailImg == 'noImg') {
                     user.thumbnailImg = `http://localhost:4000/avatar.png`;
 
-                    user.ownedBurgers.forEach((burger) => {
+                    user.ownedBurgers = user.ownedBurgers.map((burger) => {
                         const newImg = burger.displayImg == 'noImg' ? `http://localhost:4000/burger2.png` : burger.displayImg
                         return { ...burger, displayImg: newImg }
                     });

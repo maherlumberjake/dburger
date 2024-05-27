@@ -49,7 +49,7 @@ export const createNew = async (req, res) => {
             const newBurger = await Burger.create({ ...req.body, owner: user, displayImg: file })
 
             if (newBurger) {
-                user = await User.findByIdAndUpdate(user._id, { ownedBurgers: user.ownedBurgers ? [...user.ownedBurgers, newBurger] : [newBurger] })
+                user = await User.findByIdAndUpdate(user._id, { ownedBurgers: user.ownedBurgers ? [...user.ownedBurgers, newBurger._id] : user.ownedBurgers.push(newBurger._id) })
 
                 return res.status(201).json({
                     status: 'success',
@@ -66,7 +66,7 @@ export const createNew = async (req, res) => {
 export const getBurgerById = async (req, res) => {
 
     try {
-        let burger = await Burger.findById({ _id: req.params.id })
+        let burger = await Burger.findOne({ _id: req.params.id })
             .populate('owner')
             .populate({
                 path: 'comments',
@@ -75,7 +75,6 @@ export const getBurgerById = async (req, res) => {
                     select: { name: 1, thumbnailImg: 1 }
                 }
             });
-        burger.displayImg = burger.displayImg == 'noImg' ? `http://localhost:4000/burger2.png` : `http://localhost:4000/${burger.displayImg}`
         res.status(200).json({
             status: 'success',
             burger,
@@ -87,7 +86,6 @@ export const getBurgerById = async (req, res) => {
     }
 }
 export const addComment = async (req, res) => {
-    console.log(req.body)
     try {
         let token = req.headers.authorization
         if (!token || token.includes("null")) {

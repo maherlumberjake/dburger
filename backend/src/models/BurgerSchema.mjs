@@ -54,9 +54,20 @@ BurgerSchema.pre('find', async function (next) {
 });
 BurgerSchema.post('find', function (docs) {
     docs.forEach(doc => {
-        if (doc.displayImg == 'noImg') {
-            doc.displayImg = `http://localhost:4000/burger2.png`;
-        }
+        doc.displayImg = doc.displayImg == 'noImg' ?
+            `http://localhost:4000/burger2.png`
+            : !(doc.displayImg.startsWith('http://localhost:4000'))
+                ? `http://localhost:4000/${doc.displayImg}`
+                : doc.displayImg
     })
 })
-export const Burger = mongoose.model('Burgers', BurgerSchema)
+BurgerSchema.post('findOne', function (doc) {
+    doc.displayImg = doc.displayImg == 'noImg' ?
+        `http://localhost:4000/burger2.png`
+        : !(doc.displayImg.startsWith('http://localhost:4000'))
+            ? `http://localhost:4000/${doc.displayImg}`
+            : doc.displayImg
+
+})
+
+export const Burger = mongoose.model('Burger', BurgerSchema)
