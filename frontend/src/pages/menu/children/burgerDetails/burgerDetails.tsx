@@ -27,7 +27,7 @@ export default function BurgerDetails() {
 			}
 		}
 	}
-	console.log(burger);
+
 	useEffect(() => {
 		const fetchBurgerDetails = async () => {
 			try {
@@ -46,7 +46,6 @@ export default function BurgerDetails() {
 		};
 		fetchBurgerDetails();
 	}, [id, message]);
-
 	return (
 		<>
 			{!loading && burger ? (
@@ -121,9 +120,15 @@ export default function BurgerDetails() {
 						</div>
 					</div>
 					<section className=" grid-cols-subgrid gap-4">
-						<h3 className="text-xl sm:text-2xl text-yellow-500  mb-5">
-							Comments :
-						</h3>
+						<div className="flex items-center  gap-4 ">
+							<span className="text-xl sm:text-2xl">
+								{burger.comments.length}
+							</span>
+
+							<h3 className="text-xl sm:text-2xl text-yellow-500">
+								Comments :
+							</h3>
+						</div>
 						{burger?.comments.map((comment) => (
 							<div
 								key={comment._id}

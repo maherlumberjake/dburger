@@ -6,12 +6,14 @@
 	flex-direction: column;
 	border: 0.2em solid currentColor;
 	border-radius: 0.4em;
+	max-width: fit-content;
+	max-height: fit-content;
 	&:hover {
 		transform: scale(1.04);
 		box-shadow: 0px 0px 8px 0px rgba(255, 115, 0, 0.377);
 	}
 	> img {
-		width: 100%;
+		max-width: 16rem;
 	}
 	h3 {
 		font-size: 1.5rem;

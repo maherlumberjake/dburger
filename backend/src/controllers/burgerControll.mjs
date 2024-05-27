@@ -16,15 +16,7 @@ export const getAllBurgers = async (req, res) => {
         }
         burgersCursor = burgersCursor.skip(skip).limit(limit)
         // paginartion stuff
-        let data = await burgersCursor.select('-comments')
-        data = data.map(burger => {
-            if (burger.displayImg == 'noImg') {
-                burger.displayImg = `http://localhost:4000/burger2.png`;
-            } else {
-                burger.displayImg = `http://localhost:4000/${burger.displayImg}`;
-            }
-            return burger;
-        });
+        let data = await burgersCursor
         if (!data) {
             return res.status(200).json('no burgers yet')
         }
@@ -57,7 +49,8 @@ export const createNew = async (req, res) => {
             const newBurger = await Burger.create({ ...req.body, owner: user, displayImg: file })
 
             if (newBurger) {
-                user = await User.findByIdAndUpdate(user._id, { ownedBurgers: [...user.ownedBurgers, newBurger] })
+                user = await User.findByIdAndUpdate(user._id, { ownedBurgers: user.ownedBurgers ? [...user.ownedBurgers, newBurger] : [newBurger] })
+
                 return res.status(201).json({
                     status: 'success',
                     newBurger,
@@ -82,7 +75,7 @@ export const getBurgerById = async (req, res) => {
                     select: { name: 1, thumbnailImg: 1 }
                 }
             });
-        burger.displayImg = `http://localhost:4000/${burger.displayImg}`
+        burger.displayImg = burger.displayImg == 'noImg' ? `http://localhost:4000/burger2.png` : `http://localhost:4000/${burger.displayImg}`
         res.status(200).json({
             status: 'success',
             burger,

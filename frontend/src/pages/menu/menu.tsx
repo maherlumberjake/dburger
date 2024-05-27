@@ -41,7 +41,6 @@ export default function UserProfile() {
 		setCurrentPage((p) => p + 1);
 		return setSearchParams(`?page=${currentPage + 1}`);
 	}
-	console.log(menu);
 	useEffect(() => {
 		const fetchData = async () => {
 			setLoading(true);
@@ -56,6 +55,7 @@ export default function UserProfile() {
 		};
 		fetchData();
 	}, [currentPage, searchParams]);
+	console.log(menu);
 
 	return (
 		<>

@@ -8,6 +8,7 @@ axioslocal.defaults.headers.common.Authorization = `Bearer ${localStorage.getIte
 	"jwt"
 )}`;
 import { USER } from "../../../models/USER";
+import Burger from "../../../components/burgerComponent/burger";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const loader = () => {
@@ -57,6 +58,7 @@ export default function UserProfile() {
 
 		fetchData();
 	}, []);
+
 	console.log(user);
 	return (
 		<>
@@ -115,8 +117,15 @@ export default function UserProfile() {
 								</button>
 							)}
 						</div>
+						<section className="grid  sm:grid-col-2 md:grid-cols-4 p-12">
+							{user.ownedBurgers.map((burger) => (
+								<Burger
+									burger={burger}
+									key={burger._id}
+								/>
+							))}
+						</section>
 					</section>
-					<div>hello world</div>
 				</>
 			) : (
 				<h2 className="text-4xl text-center py-10 text-yellow-400 font-bold">
