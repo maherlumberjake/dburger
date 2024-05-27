@@ -1,0 +1,40 @@
+.toolTip {
+	position: absolute;
+	right: 2.5%;
+	bottom: 10%;
+	background-color: var(--lightc);
+	color: var(--darkc);
+	padding: 1rem;
+	animation: fadeIn 3s;
+	opacity: 0;
+	p {
+		font-size: 1rem;
+	}
+	&::after {
+		content: "";
+		width: 0%;
+		height: 10%;
+		background-color: var(--darkc);
+		position: absolute;
+		transform-origin: left;
+		border-radius: 3px;
+		animation: toRight 3s;
+	}
+}
+@keyframes fadeIn {
+	50% {
+		opacity: 1;
+	}
+	0%,
+	100% {
+		opacity: 0;
+	}
+}
+@keyframes toRight {
+	0% {
+		width: 90%;
+	}
+	100% {
+		width: 0%;
+	}
+}

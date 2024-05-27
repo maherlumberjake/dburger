@@ -62,6 +62,13 @@ export default function Burger({ burger }: { burger: BURGER }) {
 						<span> {disCount(burger.price, burger.discount)}</span>
 					</div>
 				</div>
+				<div className="owner">
+					<img
+						src={burger.owner.thumbnailImg}
+						alt="owner img"
+					/>
+					<span className="capitalize"> {burger.owner.name}</span>
+				</div>
 			</div>
 		</>
 	);

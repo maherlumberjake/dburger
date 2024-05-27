@@ -118,3 +118,41 @@ export const addComment = async (req, res) => {
         res.status(404)
     }
 }
+export const likeBurger = async (req, res) => {
+    try {
+
+        let token = req.headers.authorization
+        if (!token || token.includes("null")) {
+            return res.status(401).json({ status: 'fail', message: 'not auth' })
+        }
+        if (token?.startsWith('Bearer')) {
+            token = token.split(' ')[1]
+            const decoded = jwt.verify(token, process.env.SECRET_STR)
+            if (!decoded) {
+                return res.status(400).json({ msg: 'invaild token' })
+            }
+            let user = await User.findById(decoded.payload)
+            if (user) {
+                const list = user.likeList
+                if (list && list.includes(req.params.id)) {
+                    return res.status(400).json({ status: 'fail', message: 'this item already in your like list' })
+                }
+                else {
+                    const burger = await Burger.findByIdAndUpdate(req.params.id, { $inc: { likes: 1 } });
+                    if (!burger) {
+                        return res.status(404).json({ status: 'fail', message: 'Burger not found' });
+                    }
+                    user = await User.findByIdAndUpdate(user._id, { likeList: user.likeList ? [...user.likeList, burger._id] : user.likeList.push(burger._id) })
+
+                }
+            }
+            res.status(200).json({ status: 'success', message: 'added to your like list' })
+
+
+
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+}

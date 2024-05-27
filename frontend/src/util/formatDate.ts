@@ -1,6 +1,6 @@
 export function formatDates(time: string) {
 	const minute = new Date(time).getMinutes();
-	const hour: number = new Date(time).getHours() + 1;
+	const hour: number = new Date(time).getHours();
 	let day: string | number = new Date(time).getDay();
 	switch (day) {
 		case 1:

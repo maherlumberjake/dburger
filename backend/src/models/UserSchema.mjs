@@ -32,6 +32,11 @@ export const UserSchema = mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Burger',
         default: []
+    },
+    likeList: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Burger',
+        default: [],
     }
 })
 UserSchema.pre('save', async function (next) {
