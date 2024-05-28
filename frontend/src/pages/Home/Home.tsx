@@ -38,7 +38,7 @@ export default function Home() {
 						{user?.error
 							? "refresh"
 							: user?.loading
-							? "loading"
+							? "loading..."
 							: user?.auth
 							? "menu"
 							: "join now"}

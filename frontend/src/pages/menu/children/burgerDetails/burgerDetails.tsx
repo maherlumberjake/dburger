@@ -15,11 +15,14 @@ export default function BurgerDetails() {
 	//coment handdling
 	const commentRef = useRef<HTMLInputElement>(null);
 	const [commentMessage, setCommentMessage] = useState<string | null>(null);
+	const [loadingComment, setLoadingComment] = useState<boolean>(false);
 	async function sendComment(id: string) {
+		setLoadingComment(true);
 		setCommentMessage(null);
 		const comment = commentRef.current?.value;
 		if (!comment) {
 			setCommentMessage("cannot send empty comment");
+			setLoadingComment(false);
 			setTimeout(() => {
 				setCommentMessage(null);
 			}, 3000);
@@ -39,6 +42,8 @@ export default function BurgerDetails() {
 				setTimeout(() => {
 					setCommentMessage(null);
 				}, 3000);
+			} finally {
+				setLoadingComment(false);
 			}
 		}
 	}
@@ -90,7 +95,6 @@ export default function BurgerDetails() {
 		};
 		fetchBurgerDetails();
 	}, [id, commentMessage, likeMessage]);
-	console.log(likeMessage);
 	return (
 		<>
 			{!loading && burger ? (
@@ -115,25 +119,27 @@ export default function BurgerDetails() {
 						)}
 						<div className="flex gap-4 ">
 							{loadingLike ? (
-								<span>loading</span>
+								<div className=" w-4   border-yellow-500 animate-spin h-4  border-2 rounded-full border-b-transparent"></div>
 							) : (
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									fill={likeMessage ? "currentColor" : "none"}
-									viewBox="0 0 24 24"
-									strokeWidth={1.5}
-									stroke="currentColor"
-									className="size-6 hover:text-yellow-500 cursor-pointer"
-									onClick={() => likeIt(burger._id)}
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
-									/>
-								</svg>
+								<>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										fill={likeMessage ? "currentColor" : "none"}
+										viewBox="0 0 24 24"
+										strokeWidth={1.5}
+										stroke="currentColor"
+										className="size-6 hover:text-yellow-500 cursor-pointer"
+										onClick={() => likeIt(burger._id)}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z"
+										/>
+									</svg>
+									<span className="">{burger?.likes} </span>
+								</>
 							)}
-							<span className="">{burger?.likes} </span>
 						</div>
 						<span className="text-xl sm:text-2xl text-red-500 line-through font-bold justify-self-end">
 							{burger?.price} $
@@ -163,7 +169,7 @@ export default function BurgerDetails() {
 								onClick={() => sendComment(burger._id)}
 								className=" transition-transform hover:scale-105 border-current text-yellow-500 border-2 p-y px-2 font-bold rounded-md w-1/3 "
 							>
-								send
+								{loadingComment ? "sending..." : "send"}
 							</button>
 							<button className=" text-red-950 transition-transform hover:scale-105 border-current bg-yellow-500 border-2 p-y px-2 font-bold w-1/3  rounded-md">
 								add to cart
@@ -205,9 +211,7 @@ export default function BurgerDetails() {
 					</section>
 				</div>
 			) : (
-				<h2 className="text-center text-yellow-500 text-3xl font-bold py-40">
-					loading...
-				</h2>
+				<div className=" w-20  mt-20 mx-auto border-yellow-500 animate-spin h-20  border-4 rounded-full border-b-transparent"></div>
 			)}
 			{likeMessage && (
 				<div className="toolTip">

@@ -13,7 +13,7 @@ export default function Root() {
 	const user = useUser();
 	return (
 		<>
-			<header className=" py-2 px-4 w-full flex items-center z-50 fixed justify-between rounded-sm ">
+			<header className=" py-2 px-4 w-full flex items-center z-50 sticky justify-between rounded-sm ">
 				<Link to="/">
 					<img
 						src={logo}
@@ -62,8 +62,10 @@ export default function Root() {
 								/>
 							)}
 						</>
+					) : user.error ? (
+						<h2>Error</h2>
 					) : (
-						<h2>{user.error ? "Server error" : "Loading..."}</h2>
+						<div className=" w-6  border-yellow-500 animate-spin h-6  border-2 rounded-full border-b-transparent"></div>
 					)}
 				</nav>
 			</header>

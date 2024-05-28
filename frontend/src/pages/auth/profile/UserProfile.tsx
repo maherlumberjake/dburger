@@ -117,6 +117,7 @@ export default function UserProfile() {
 								</button>
 							)}
 						</div>
+
 						<section className="grid  sm:grid-col-2 md:grid-cols-4 p-12">
 							{user.ownedBurgers.map((burger) => (
 								<Burger
@@ -128,9 +129,7 @@ export default function UserProfile() {
 					</section>
 				</>
 			) : (
-				<h2 className="text-4xl text-center py-10 text-yellow-400 font-bold">
-					loading...
-				</h2>
+				<div className=" w-20  mt-20 mx-auto border-yellow-500 animate-spin h-20  border-4 rounded-full border-b-transparent"></div>
 			)}
 		</>
 	);

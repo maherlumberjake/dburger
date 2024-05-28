@@ -86,9 +86,7 @@ export default function UserProfile() {
 				</h2>
 			)}
 			{loading ? (
-				<h2 className="text-center text-yellow-500 text-3xl font-bold py-40">
-					loading...
-				</h2>
+				<div className=" w-20  mt-20 mx-auto border-yellow-500 animate-spin h-20  border-4 rounded-full border-b-transparent"></div>
 			) : (
 				<section id="menu">
 					{menu?.data?.map((burger) => (
