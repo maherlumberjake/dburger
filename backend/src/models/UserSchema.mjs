@@ -28,7 +28,16 @@ export const UserSchema = mongoose.Schema({
         type: String,
         default: "noImg"
     },
-    ownedBurgers: [BurgerSchema]
+    ownedBurgers: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Burger',
+        default: []
+    },
+    likeList: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Burger',
+        default: [],
+    }
 })
 UserSchema.pre('save', async function (next) {
     await bcrypt.hash(this.password, 10).then((newPassword) => {

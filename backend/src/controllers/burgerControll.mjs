@@ -16,15 +16,7 @@ export const getAllBurgers = async (req, res) => {
         }
         burgersCursor = burgersCursor.skip(skip).limit(limit)
         // paginartion stuff
-        let data = await burgersCursor.populate('owner').exec();
-        data = data.map(burger => {
-            if (burger.displayImg == 'noImg') {
-                burger.displayImg = `http://localhost:4000/burger2.png`;
-            } else {
-                burger.displayImg = `http://localhost:4000/${burger.displayImg}`;
-            }
-            return burger;
-        });
+        let data = await burgersCursor
         if (!data) {
             return res.status(200).json('no burgers yet')
         }
@@ -57,7 +49,8 @@ export const createNew = async (req, res) => {
             const newBurger = await Burger.create({ ...req.body, owner: user, displayImg: file })
 
             if (newBurger) {
-                user = await User.findByIdAndUpdate(user._id, { ownedBurgers: [...user.ownedBurgers, newBurger] })
+                user = await User.findByIdAndUpdate(user._id, { ownedBurgers: user.ownedBurgers ? [...user.ownedBurgers, newBurger._id] : user.ownedBurgers.push(newBurger._id) })
+
                 return res.status(201).json({
                     status: 'success',
                     newBurger,
@@ -73,8 +66,15 @@ export const createNew = async (req, res) => {
 export const getBurgerById = async (req, res) => {
 
     try {
-        let burger = await Burger.findById({ _id: req.params.id })
-        burger.displayImg = `http://localhost:4000/${burger.displayImg}`
+        let burger = await Burger.findOne({ _id: req.params.id })
+            .populate('owner')
+            .populate({
+                path: 'comments',
+                populate: {
+                    path: 'byUser',
+                    select: { name: 1, thumbnailImg: 1 }
+                }
+            });
         res.status(200).json({
             status: 'success',
             burger,
@@ -83,5 +83,76 @@ export const getBurgerById = async (req, res) => {
     } catch (error) {
         console.log(error)
         res.status(404)
+    }
+}
+export const addComment = async (req, res) => {
+    try {
+        let token = req.headers.authorization
+        if (!token || token.includes("null")) {
+            return res.status(401).json({ status: 'fail', message: 'not auth' })
+        }
+        if (token?.startsWith('Bearer')) {
+            token = token.split(' ')[1]
+            const decoded = jwt.verify(token, process.env.SECRET_STR)
+            if (!decoded) {
+                return res.status(400).json({ msg: 'invaild token' })
+            }
+            let user = await User.findById(decoded.payload)
+
+
+            const burger = await Burger.findById(req.params.id);
+            if (!burger) {
+                return res.status(404).json({ status: 'fail', message: 'Burger not found' });
+            }
+
+            const newComment = { byUser: user, comment: req.body.comment, timestamp: new Date() };
+            burger.comments.push(newComment);
+            await burger.save();
+
+            res.status(200).json({ status: 'success' });
+
+        }
+    }
+    catch (error) {
+        console.log(error)
+        res.status(404)
+    }
+}
+export const likeBurger = async (req, res) => {
+    try {
+
+        let token = req.headers.authorization
+        if (!token || token.includes("null")) {
+            return res.status(401).json({ status: 'fail', message: 'not auth' })
+        }
+        if (token?.startsWith('Bearer')) {
+            token = token.split(' ')[1]
+            const decoded = jwt.verify(token, process.env.SECRET_STR)
+            if (!decoded) {
+                return res.status(400).json({ msg: 'invaild token' })
+            }
+            let user = await User.findById(decoded.payload)
+            if (user) {
+                const list = user.likeList
+                if (list && list.includes(req.params.id)) {
+                    return res.status(400).json({ status: 'fail', message: 'this item already in your like list' })
+                }
+                else {
+                    const burger = await Burger.findByIdAndUpdate(req.params.id, { $inc: { likes: 1 } });
+                    if (!burger) {
+                        return res.status(404).json({ status: 'fail', message: 'Burger not found' });
+                    }
+                    user = await User.findByIdAndUpdate(user._id, { likeList: user.likeList ? [...user.likeList, burger._id] : user.likeList.push(burger._id) })
+
+                }
+            }
+            res.status(200).json({ status: 'success', message: 'added to your like list' })
+
+
+
+        }
+
+    } catch (error) {
+        console.log(error)
     }
 }

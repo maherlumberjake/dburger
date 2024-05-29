@@ -41,7 +41,6 @@ export default function UserProfile() {
 		setCurrentPage((p) => p + 1);
 		return setSearchParams(`?page=${currentPage + 1}`);
 	}
-	console.log(menu);
 	useEffect(() => {
 		const fetchData = async () => {
 			setLoading(true);
@@ -56,6 +55,7 @@ export default function UserProfile() {
 		};
 		fetchData();
 	}, [currentPage, searchParams]);
+	console.log(menu);
 
 	return (
 		<>
@@ -85,9 +85,9 @@ export default function UserProfile() {
 					no data to show
 				</h2>
 			)}
-			{loading && menu.totalBurgers > 0 ? (
+			{loading ? (
 				<h2 className="text-center text-yellow-500 text-3xl font-bold py-40">
-					loading{" "}
+					loading...
 				</h2>
 			) : (
 				<section id="menu">

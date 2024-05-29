@@ -1,5 +1,9 @@
 import mongoose from 'mongoose'
-import { User } from './UserSchema.mjs'
+const commentSchema = new mongoose.Schema({
+    byUser: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    comment: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now }
+});
 export const BurgerSchema = mongoose.Schema({
     title: {
         type: String,
@@ -40,16 +44,30 @@ export const BurgerSchema = mongoose.Schema({
     displayImg: {
         type: String,
         default: "noImg"
-    }
+    },
+    comments: [{ type: commentSchema, ref: 'Comment' }]
+
 })
-BurgerSchema.pre('find', async function () {
+BurgerSchema.pre('find', async function (next) {
     this.populate('owner');
+    next()
 });
 BurgerSchema.post('find', function (docs) {
     docs.forEach(doc => {
-        if (doc.displayImg == 'noImg') {
-            doc.displayImg = `http://localhost:4000/burger2.png`;
-        }
+        doc.displayImg = doc.displayImg == 'noImg' ?
+            `http://localhost:4000/burger2.png`
+            : !(doc.displayImg.startsWith('http://localhost:4000'))
+                ? `http://localhost:4000/${doc.displayImg}`
+                : doc.displayImg
     })
 })
-export const Burger = mongoose.model('Burgers', BurgerSchema)
+BurgerSchema.post('findOne', function (doc) {
+    doc.displayImg = doc.displayImg == 'noImg' ?
+        `http://localhost:4000/burger2.png`
+        : !(doc.displayImg.startsWith('http://localhost:4000'))
+            ? `http://localhost:4000/${doc.displayImg}`
+            : doc.displayImg
+
+})
+
+export const Burger = mongoose.model('Burger', BurgerSchema)
